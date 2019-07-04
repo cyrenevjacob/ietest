@@ -1,0 +1,187 @@
+<html>
+<head>
+<script>
+    var pacMan = [0,0,0]; //[x,y,d]
+    var actions = [0,1,2,3,4]; //0-place,1-move,2-left,3-right and 4 announce///also doubles as possible values for x and y
+    var direction = [0,1,2,3]; //0-S, 1-W, 2-N and 3-E
+    /////////////test data/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var commands = [];
+    //commands = [1,6,1,4,[0,[0,3,3]],1,0,2,3];//the test data for running commands place: [0,[x,y,d]] and others will be 1,2,3 and 4
+    //commands = [[0,[1,0,3]],1,1,1,1,[0,[2,4,3]]];
+    commands = [[0,[4,0,3]],1,1,1,1,3,1,1,1,1,3,1,3,1,1,1];
+
+
+    function runCommand(){
+        if(commands.length>0){
+            for(var i=0; i<commands.length;i++){
+
+                if(Array.isArray(commands[i])){
+                    //this could be a place
+                    //console.log(commands[i][0], commands[i][1]);
+                    if(commands[i][0] == 0){
+                        //place
+                        var placeParameters = commands[i][1];
+                        //take only the first three
+                        if(actions.includes(placeParameters[0]) && actions.includes(placeParameters[1]) && direction.includes(placeParameters[2])){
+                            //console.log("Values are valid.\nx="+placeParameters[0]+',y='+placeParameters[1]+',d='+placeParameters[2]);
+                            place(placeParameters[0], placeParameters[1], placeParameters[2]);
+                        }
+                        else{
+                            console.log("Values are invalid or out of range.x="+placeParameters[0]+',y='+placeParameters[1]+',d='+placeParameters[2]);
+                        }
+                    }
+                    else{
+                        console.log("Not a valid place command " + commands[i][0]);
+                    }
+                }
+                else{
+                    //non-place commands
+                    if(actions.includes(commands[i])){
+                        switch(commands[i]){
+                            case 4: 
+                            announce();
+                            break;
+                            case 3:
+                            right();
+                            break;
+                            case 2:
+                            left();
+                            break;
+                            case 1:
+                            move();
+                            break;
+                        }
+                    }
+                    else{
+                        console.log("ignored invalid command " + commands[i]);
+                    }
+                }
+            }
+        }
+        else{
+            console.log("Nothing to run.");
+        }
+    }
+    
+    function place(x,y,d){
+        if(actions.includes(x) && actions.includes(y))
+        {
+            if(direction.includes(d)){
+                pacMan[0] = x;
+                pacMan[1] = y;
+                pacMan[2] = d;
+            }
+            else{
+                console.log("direction is invalid", d);
+            }
+        }
+        console.log("PacMan set to ");
+        announce();
+    }
+    //function to announce the position/////
+    function announce(){
+        console.log(pacMan);
+    }
+    ///////////////////////end announce/////
+
+    //function to move one step based on direction/////
+    function move(){
+        var x = pacMan[0];
+        var y = pacMan[1];
+        var d = pacMan[2];
+        //no offgrid moves//////////////////////////////
+        if((x==0 && d==0) || (y==0 && d==1) || (x==4 && d==2) || (y==4 && d==3)){
+            return;
+        }
+        switch(d){
+            case 0:
+            x--;
+            break;
+            case 1:
+            y--;
+            break;
+            case 2:
+            x++;
+            break;
+            case 3:
+            y++;
+            break;
+        }
+        //set the new x and y
+        pacMan[0] = x;
+        pacMan[1] = y;
+        pacMan[2] = d;
+        console.log("PacMan moved to ");
+        announce();
+    }
+    //////////////////////move ends here//////////////////
+
+    //move left/////////////////////////////////////////////
+    function left(){
+        //get the current values
+        var x = pacMan[0];
+        var y = pacMan[1];
+        var d = pacMan[2];
+        //change direction based on current value
+        //0->3,1->0,2->1,3->2
+        switch(d){
+            case 0:
+            d=3;
+            break;
+            case 1:
+            d=0;
+            break;
+            case 2:
+            d=1;
+            break;
+            case 3:
+            d=2;
+            break;
+        }
+        //set the direction d. Can omit the x and y
+        pacMan[0] = x;
+        pacMan[1] = y;
+        pacMan[2] = d;
+        console.log("PacMan turned left to ");
+        announce();
+    }
+    ////////////////////////////move left ends here/////////////
+
+    ////move right//////////////////////////////////////////////
+    function right(){
+        //get the current values
+        var x = pacMan[0];
+        var y = pacMan[1];
+        var d = pacMan[2];
+        //change direction based on current direction by 90 degrees
+        //0->1,1->2,2->3,3->0
+        switch(d){
+            case 0:
+            d=1;
+            break;
+            case 1:
+            d=2;
+            break;
+            case 2:
+            d=3;
+            break;
+            case 3:
+            d=0;
+            break;
+        }
+        //set the new d. Can omit the x and y parts
+        pacMan[0] = x;
+        pacMan[1] = y;
+        pacMan[2] = d;
+        console.log("PacMan turned right to ");
+        announce();
+    }
+    ///////////////////////////////move right ends here////////////
+</script>
+</head>
+<body onload="runCommand()">
+    <script>
+        
+    </script>
+</body>
+</html>
