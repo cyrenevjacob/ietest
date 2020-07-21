@@ -1,5 +1,5 @@
-# ietest
-Test IE Submitted on the 4th of July
+# PacMan Script
+A script to manipulate the position of PacMan based on input.
 
 The code runs in the following format:
 
