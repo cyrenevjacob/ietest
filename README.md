@@ -1,5 +1,5 @@
 # PacMan Script
-A script to manipulate the position of PacMan based on input.
+A script to manipulate the position of PacMan based on input. Output is seen in the console.
 
 The code runs in the following format:
 
